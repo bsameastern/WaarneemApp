@@ -40,18 +40,25 @@
         </div>
       </section>
     </div>
-    <aside v-if="showShiftDrawer" class="card column is-3 section pl-4"></aside>
+    <aside v-if="showShiftDrawer" class="card column is-3 section pl-4">
+      <CreateUpdateShift
+        :vacancy-data="vacancyData"
+        :mode="vacancyUpdateMode"
+        @updated="onUpdateData"
+      />
+    </aside>
   </section>
 </template>
 
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex'
-
+import CreateUpdateShift from '~/components/CreateUpdateShift.vue'
 import ShiftCard from '~/components/ShiftCard.vue'
 
 export default {
   name: 'IndexPage',
   components: {
+    CreateUpdateShift,
     ShiftCard,
   },
   data() {
@@ -86,6 +93,12 @@ export default {
       this.vacancyUpdateMode = 'edit'
       this.vacancyData = { ...vacancy }
       this.showShiftDrawer = true
+    },
+
+    onUpdateData() {
+      this.showShiftDrawer = false
+      this.vacancyData = {}
+      this.updateFilters(this.priceRange)
     },
   },
 
